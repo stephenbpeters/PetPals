@@ -1,6 +1,4 @@
 # import necessary libraries
-# it's not finding models.py, so added the code below
-#from models import create_classes
 import os
 from flask import (
     Flask,
@@ -8,22 +6,6 @@ from flask import (
     jsonify,
     request,
     redirect)
-    
-#################################################
-# wasn't finding models.py, so adding that code here
-#################################################    
-def create_classes(db):
-    class Pet(db.Model):
-        __tablename__ = 'pets'
-
-        id = db.Column(db.Integer, primary_key=True)
-        name = db.Column(db.String(64))
-        lat = db.Column(db.Float)
-        lon = db.Column(db.Float)
-
-        def __repr__(self):
-            return '<Pet %r>' % (self.name)
-    return Pet
 
 #################################################
 # Flask Setup
@@ -42,7 +24,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-Pet = create_classes(db)
+from .models import Pet
+
 
 # create route that renders index.html template
 @app.route("/")
@@ -82,7 +65,7 @@ def pals():
         "text": hover_text,
         "hoverinfo": "text",
         "marker": {
-            "size": 50,
+            "size": 15,
             "line": {
                 "color": "rgb(8,8,8)",
                 "width": 1
